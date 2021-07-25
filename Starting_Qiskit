@@ -1,0 +1,9 @@
+from qiskit import QuantumCircuit
+from qiskit.providers.aer import AerSimulator
+sim = AerSimulator()
+qc = QuantumCircuit(3, 3)
+qc.x([2])
+qc.measure([0,1,2], [0,1,2])
+job = sim.run(qc)
+result = job.result()
+print(result.get_counts())
