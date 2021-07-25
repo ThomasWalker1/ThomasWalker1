@@ -1,0 +1,213 @@
+import random
+import matplotlib.pyplot as plt
+
+
+def euro_winner(para):
+    teams = []
+    for i in range(1, 27):
+        teams.append(i)
+
+    random.shuffle(teams)
+
+    def grouping(num):
+        list = []
+        for i in range((num - 1) * 4, num * 4):
+            list.append(teams[i])
+        return list
+
+    def group_stage(list, parameter = para):
+        results = [0, 0, 0, 0]
+        for i in range(0, 4):
+            for j in range(i + 1, 4):
+                if list[i] < list[j]:
+                    diff = list[j] - list[i]
+                    p = random.random()
+                    if p < 1 / (diff + para):
+                        results[j] += 3
+                    else:
+                        results[i] += 3
+                else:
+                    diff = list[i] - list[j]
+                    p = random.random()
+                    if p < 1 / (diff + para):
+                        results[i] += 3
+                    else:
+                        results[j] += 3
+        return results
+
+    def order_group(teams, results):
+        nines = []
+        sixes = []
+        threes = []
+        zeros = []
+        for i in range(len(results)):
+            if results[i] == 9:
+                nines.append(teams[i])
+            elif results[i] == 6:
+                sixes.append(teams[i])
+            elif results[i] == 3:
+                threes.append(teams[i])
+            else:
+                zeros.append(teams[i])
+        return sorted(nines) + sorted(sixes) + sorted(threes) + sorted(zeros)
+
+    def game(list, parameter = para):
+        if list[0] < list[1]:
+            diff = list[1] - list[0]
+            p = random.random()
+            if p < 1 / (diff + para):
+                return list[1]
+            else:
+                return list[0]
+        else:
+            diff = list[0] - list[1]
+            p = random.random()
+            if p < 1 / (diff + para):
+                return list[0]
+            else:
+                return list[1]
+
+    group_A = grouping(1)
+    group_B = grouping(2)
+    group_C = grouping(3)
+    group_D = grouping(4)
+    group_E = grouping(5)
+    group_F = grouping(6)
+
+    group_A_sorted = order_group(group_A, group_stage(group_A))
+    group_B_sorted = order_group(group_B, group_stage(group_B))
+    group_C_sorted = order_group(group_C, group_stage(group_C))
+    group_D_sorted = order_group(group_D, group_stage(group_D))
+    group_E_sorted = order_group(group_E, group_stage(group_E))
+    group_F_sorted = order_group(group_F, group_stage(group_F))
+
+    firsts = [group_A_sorted[0], group_B_sorted[0], group_C_sorted[0], group_D_sorted[0], group_E_sorted[0],
+              group_F_sorted[0]]
+    seconds = [group_A_sorted[1], group_B_sorted[1], group_C_sorted[1], group_D_sorted[1], group_E_sorted[1],
+               group_F_sorted[1]]
+    thirds = [group_A_sorted[2], group_B_sorted[2], group_C_sorted[2], group_D_sorted[2], group_E_sorted[2],
+              group_F_sorted[2]]
+    thirds_sorted = sorted(thirds)
+    match_37_winner = game([seconds[0], seconds[1]])
+    match_38_winner = game([firsts[0], seconds[2]])
+    match_39_winner = game([firsts[2], thirds_sorted[0]])
+    match_40_winner = game([firsts[1], thirds_sorted[1]])
+    match_41_winner = game([seconds[3], seconds[4]])
+    match_42_winner = game([firsts[5], thirds_sorted[2]])
+    match_43_winner = game([firsts[3], seconds[5]])
+    match_44_winner = game([firsts[4], thirds_sorted[3]])
+    match_45_winner = game([match_42_winner, match_41_winner])
+    match_46_winner = game([match_40_winner, match_38_winner])
+    match_47_winner = game([match_39_winner, match_37_winner])
+    match_48_winner = game([match_44_winner, match_43_winner])
+    match_49_winner = game([match_46_winner, match_45_winner])
+    match_50_winner = game([match_48_winner, match_47_winner])
+    winner = game([match_49_winner, match_50_winner])
+    return winner
+
+
+def euro_runner(para):
+    teams = []
+    for i in range(1, 27):
+        teams.append(i)
+
+    random.shuffle(teams)
+
+    def grouping(num):
+        list = []
+        for i in range((num - 1) * 4, num * 4):
+            list.append(teams[i])
+        return list
+
+    def group_stage(list, parameter = para):
+        results = [0, 0, 0, 0]
+        for i in range(0, 4):
+            for j in range(i + 1, 4):
+                if list[i] < list[j]:
+                    diff = list[j] - list[i]
+                    p = random.random()
+                    if p < 1 / (diff + para):
+                        results[j] += 3
+                    else:
+                        results[i] += 3
+                else:
+                    diff = list[i] - list[j]
+                    p = random.random()
+                    if p < 1 / (diff + para):
+                        results[i] += 3
+                    else:
+                        results[j] += 3
+        return results
+
+    def order_group(teams, results):
+        nines = []
+        sixes = []
+        threes = []
+        zeros = []
+        for i in range(len(results)):
+            if results[i] == 9:
+                nines.append(teams[i])
+            elif results[i] == 6:
+                sixes.append(teams[i])
+            elif results[i] == 3:
+                threes.append(teams[i])
+            else:
+                zeros.append(teams[i])
+        return sorted(nines) + sorted(sixes) + sorted(threes) + sorted(zeros)
+
+    def game(list, parameter = para):
+        if list[0] < list[1]:
+            diff = list[1] - list[0]
+            p = random.random()
+            if p < 1 / (diff + para):
+                return list[1]
+            else:
+                return list[0]
+        else:
+            diff = list[0] - list[1]
+            p = random.random()
+            if p < 1 / (diff + para):
+                return list[0]
+            else:
+                return list[1]
+
+    group_A = grouping(1)
+    group_B = grouping(2)
+    group_C = grouping(3)
+    group_D = grouping(4)
+    group_E = grouping(5)
+    group_F = grouping(6)
+
+    group_A_sorted = order_group(group_A, group_stage(group_A))
+    group_B_sorted = order_group(group_B, group_stage(group_B))
+    group_C_sorted = order_group(group_C, group_stage(group_C))
+    group_D_sorted = order_group(group_D, group_stage(group_D))
+    group_E_sorted = order_group(group_E, group_stage(group_E))
+    group_F_sorted = order_group(group_F, group_stage(group_F))
+
+    firsts = [group_A_sorted[0], group_B_sorted[0], group_C_sorted[0], group_D_sorted[0], group_E_sorted[0],
+              group_F_sorted[0]]
+    seconds = [group_A_sorted[1], group_B_sorted[1], group_C_sorted[1], group_D_sorted[1], group_E_sorted[1],
+               group_F_sorted[1]]
+    thirds = [group_A_sorted[2], group_B_sorted[2], group_C_sorted[2], group_D_sorted[2], group_E_sorted[2],
+              group_F_sorted[2]]
+    thirds_sorted = sorted(thirds)
+    match_37_winner = game([seconds[0], seconds[1]])
+    match_38_winner = game([firsts[0], seconds[2]])
+    match_39_winner = game([firsts[2], thirds_sorted[0]])
+    match_40_winner = game([firsts[1], thirds_sorted[1]])
+    match_41_winner = game([seconds[3], seconds[4]])
+    match_42_winner = game([firsts[5], thirds_sorted[2]])
+    match_43_winner = game([firsts[3], seconds[5]])
+    match_44_winner = game([firsts[4], thirds_sorted[3]])
+    match_45_winner = game([match_42_winner, match_41_winner])
+    match_46_winner = game([match_40_winner, match_38_winner])
+    match_47_winner = game([match_39_winner, match_37_winner])
+    match_48_winner = game([match_44_winner, match_43_winner])
+    match_49_winner = game([match_46_winner, match_45_winner])
+    match_50_winner = game([match_48_winner, match_47_winner])
+    winner = game([match_49_winner, match_50_winner])
+    if winner == match_49_winner:
+        return match_50_winner
+    else:
+        return match_49_winner
