@@ -1,0 +1,11 @@
+def gcd(a,b):
+    y = max(a,b)
+    x = min(a,b)
+    r=y%x
+    while r!=0:
+        y_temp = y
+        x_temp = x
+        y = x_temp
+        x = y_temp%x_temp
+        r = y%x
+    return x
