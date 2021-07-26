@@ -1,0 +1,16 @@
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
+qc = QuantumCircuit(2)
+
+qc.h(0)
+qc.h(1)
+qc.cx(0,1)
+ket = Statevector(qc)
+print(ket)
+
+qc = QuantumCircuit(2)
+qc.h(0)
+qc.h(1)
+qc.z(0)
+ket = Statevector(qc)
+print(ket)
