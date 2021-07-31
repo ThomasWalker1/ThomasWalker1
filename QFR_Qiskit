@@ -1,0 +1,11 @@
+from qiskit import QuantumCircuit
+import numpy as np
+
+
+def QFT(nqubits):
+    QFT_circuit = QuantumCircuit(nqubits)
+    for i in range(nqubits):
+        QFT_circuit.h(i)
+        for j in range(i, nqubits + 1):
+            QFT_circuit.cu1(np.pi / (2 ** (j - i), j))
+    return QFT_circuit
