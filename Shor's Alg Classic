@@ -1,0 +1,33 @@
+def gcd(a,b):
+    y = max(a,b)
+    x = min(a,b)
+    r=y%x
+    while r!=0:
+        y_temp = y
+        x_temp = x
+        y = x_temp
+        x = y_temp%x_temp
+        r = y%x
+    return x
+
+
+def shors_alg_classic(N, a):
+    if gcd(N,a)!=1:
+        return False
+    r = 1
+    while (a**r)%N!=1:
+        r+=1
+    if r%2!=0:
+        return False
+    else:
+        x = a**(r/2)%N
+        print(x)
+    if (x+1)%N==0:
+        return False
+    else:
+        interval=[]
+        upper = max(int(gcd(x-1,N)),int(gcd(x+1,N)))
+        lower = min(int(gcd(x-1,N)),int(gcd(x+1,N)))
+        for i in range(lower,upper+1):
+            interval.append(i)
+    return interval
