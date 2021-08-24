@@ -1,0 +1,56 @@
+import math
+import random
+import matplotlib.pyplot as plt
+
+
+def inverse_error(x):
+    C = [0.8862269254, 0.2320136665, 0.1275561753, 0.0865521292, 0.0649596177, 0.0517312819, 0.0428367206, 0.0364659293,
+         0.0316890050, 0.0279806329]
+    sum = 0
+    for i in range(10):
+        sum += C[i] * x ** (2 * i + 1)
+    return sum
+
+
+def levy():
+    p = random.random()
+    return 1 / (2 * (inverse_error(p)) ** 2)
+
+
+def cauchy():
+    p = random.random()
+    return math.tan(math.pi*(p-0.5))
+
+
+def norm():
+    p = random.random()
+    return (2**0.5)*inverse_error(2*p-1)
+
+
+steps = 1000
+
+
+for j in range(4):
+    t=[]
+    for i in range(steps):
+        t.append(i)
+    y = [0]
+    for i in range(1,steps):
+        c = cauchy()
+        y.append(y[i-1]+c)
+    plt.plot(t,y)
+    plt.title('Random Walk Driven by Cauchy Distribution')
+plt.show()
+
+
+for j in range(4):
+    t = []
+    for i in range(steps):
+        t.append(i)
+    y = [0]
+    for i in range(1,steps):
+        n = norm()
+        y.append(y[i-1]+n)
+    plt.plot(t,y)
+    plt.title('Random Walk Driven by Normal Distribution')
+plt.show()
