@@ -1,0 +1,37 @@
+import math
+import random
+import matplotlib.pyplot as plt
+
+steps = 1000
+
+
+def brownian_motion(steps):
+    t = [0]
+    b = [0]
+    for i in range(1, steps):
+        t.append(i / steps)
+        p = random.random()
+        if p > 0.5:
+            b.append(b[i - 1] + 1 / math.sqrt(steps))
+        if p < 0.5:
+            b.append(b[i - 1] - 1 / math.sqrt(steps))
+    results = [t, b]
+    return results
+
+
+def brownian_motion_bridge(steps):
+    B = []
+    b = brownian_motion(steps)[1]
+    t = brownian_motion(steps)[0]
+    for i in range(len(brownian_motion(steps)[0])):
+        B.append(b[i] - t[i] * b[-1])
+    results = [t, B, b]
+    print(t)
+    print(b)
+    print(B)
+    return results
+
+
+plt.plot(brownian_motion_bridge(steps)[0], brownian_motion_bridge(steps)[1], color='black')
+plt.plot(brownian_motion_bridge(steps)[0], brownian_motion_bridge(steps)[2], color='blue')
+plt.show()
