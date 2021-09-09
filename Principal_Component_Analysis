@@ -1,0 +1,30 @@
+import pandas as pd
+from sklearn import preprocessing
+import numpy as np
+from numpy import linalg as LA
+import matplotlib.pyplot as plt
+df_original = pd.read_csv('HR_comma_sep.csv')
+df = pd.read_csv('HR_comma_sep.csv')
+del df['Department']
+del df['left']
+del df['salary']
+cols = ['number_project','average_montly_hours','time_spend_company','Work_accident','promotion_last_5years']
+df[cols] = preprocessing.MinMaxScaler().fit_transform(df[cols])
+exp_x = np.mean(df, axis=0)
+cov_x = df.cov()
+w,v = LA.eig(cov_x)
+p = np.transpose([v[0],v[1]])
+x=[]
+y=[]
+for i in range(14999):
+    a,b = np.transpose(p).dot(np.transpose(df.iloc[[i]]))
+    x.append(a[0])
+    y.append(b[0])
+data = {'x':x,'y':y,'Department': df_original['Department']}
+pro_df = pd.DataFrame(data)
+print(pro_df)
+groups = pro_df.groupby('Department')
+for name, group in groups:
+    plt.plot(x,y,'o',markersize=0.5,label=name)
+plt.legend(markerscale=4)
+plt.show()
