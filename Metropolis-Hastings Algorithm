@@ -1,0 +1,44 @@
+import random
+import math
+import matplotlib.pyplot as plt
+
+n = 20
+alpha = 2
+beta = 3
+steps = 100000
+tally = []
+for i in range(n + 1):
+    tally.append(0)
+state = random.randint(0, n)
+
+
+def m(j, i):
+    return math.factorial(i) * math.factorial(n - i) * math.gamma(j + alpha) * math.gamma(n - j + beta) / (
+                math.factorial(j) * math.factorial(n - j) * math.gamma(i + alpha) * math.gamma(n - i + beta))
+
+
+for j in range(steps):
+    pot_state = random.randint(0, n)
+    while pot_state == state:
+        pot_state = random.randint(0, n)
+    if m(pot_state, state) > 1:
+        state = pot_state
+    else:
+        p = random.random()
+        if p < m(pot_state, state):
+            state = pot_state
+    tally[state] += 1
+tally_scaled = []
+for i in range(n + 1):
+    tally_scaled.append(tally[i] / steps)
+
+x = []
+y = []
+for i in range(n + 1):
+    x.append(i)
+    y.append(math.gamma(alpha + beta) * math.factorial(n) * math.gamma(i + alpha) * math.gamma(n - i + beta) / (
+                math.gamma(alpha) * math.gamma(beta) * math.factorial(i) * math.factorial(n - i) * math.gamma(
+            n + alpha + beta)))
+plt.plot(x, y)
+plt.plot(x, tally_scaled)
+plt.show()
