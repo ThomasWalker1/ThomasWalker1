@@ -1,0 +1,47 @@
+import math
+import random
+import matplotlib.pyplot as plt
+
+X = []
+n = 200
+l = 1
+y = []
+for i in range(n):
+    p = random.random()
+    X.append(-math.log(p, math.e) / l)
+    y.append(p)
+print(X)
+
+
+def bootstrap(X):
+    X_bootstrap = []
+    for i in range(len(X)):
+        p = random.randint(0, len(X) - 1)
+        X_bootstrap.append(X[p])
+    return X_bootstrap
+
+
+def list_count(list, target):
+    count = 0
+    for i in list:
+        if i <= target:
+            count += 1
+    return count
+
+
+cumulative = []
+max = 1000
+for i in range(max):
+    cumulative.append(0)
+for i in range(1000):
+    X_b = bootstrap(X)
+    for j in range(max):
+        cumulative[j] += list_count(X_b, j / 100) / len(X_b)
+for x in range(len(cumulative)):
+    cumulative[x] = cumulative[x] / 1000
+x = []
+for i in range(max):
+    x.append(i / 100)
+plt.scatter(x, cumulative, s=0.5)
+plt.scatter(X, y, s=0.1)
+plt.show()
