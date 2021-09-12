@@ -1,0 +1,42 @@
+import random
+
+Y_1 = (0.2724 + 0.0209) * 7700000000
+Y_2 = (0.2283 + 0.0116) * 7700000000
+Y_3 = (0.0622+0.004) * 7700000000
+Y_4 = (0.3737 + 0.0269) * 7700000000
+n = 7700000000
+
+p_A = random.random()
+p_B = random.random() / p_A
+p_O = 1 - p_A - p_B
+
+
+def X_1(p_Ak, p_Ok):
+    return p_Ak / (p_Ak + 2 * p_Ok)
+
+
+def X_3(p_Bk, p_Ok):
+    return p_Bk / (p_Bk + 2 * p_Ok)
+
+
+def p_A_est(Y_1, Y_3, p_Ak, p_Ok, n):
+    return (Y_1 + Y_3 + X_1(p_Ak, p_Ok)) / (2 * n)
+
+
+def p_B_est(Y_2, Y_3, p_Bk, p_Ok, n):
+    return (Y_2 + Y_3 + X_3(p_Bk, p_Ok)) / (2 * n)
+
+
+def p_O_est(Y_1, Y_2, Y_4, p_Ak, p_Bk, p_Ok, n):
+    return (Y_1 + Y_2 + 2 * Y_4 - X_1(p_Ak, p_Ok) - X_3(p_Bk, p_Ok)) / (2 * n)
+
+
+for i in range(100):
+    p_A_temp = p_A
+    p_B_temp = p_B
+    p_O_temp = p_O
+    p_A = p_A_est(Y_1, Y_3, p_A_temp, p_O_temp, n)
+    p_B = p_B_est(Y_2, Y_3, p_B_temp, p_O_temp, n)
+    p_O = p_O_est(Y_1, Y_2, Y_4, p_A_temp, p_B_temp, p_O_temp, n)
+
+print(p_A, p_B, p_O)
