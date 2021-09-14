@@ -1,0 +1,58 @@
+import math
+import matplotlib.pyplot as plt
+import random
+
+
+def normal(x):
+    return (1 / math.sqrt(2 * math.pi)) * math.e ** (-0.5 * x ** 2)
+
+
+def laplace(x):
+    return (1 / 2) * math.e ** (-abs(x))
+
+
+def cauchy(x):
+    return 1 / (math.pi * (1 + x ** 2))
+
+
+def interval(list):
+    return max(list) - min(list)
+
+
+def sum(data_x, x, bandwidth, distribution):
+    sum = 0
+    if distribution == 'cauchy':
+        for i in range(len(data_x)):
+            sum += cauchy((x - data_x[i]) / bandwidth)
+    elif distribution == 'normal':
+        for i in range(len(data_x)):
+            sum += normal((x - data_x[i]) / bandwidth)
+    elif distribution == 'laplace':
+        for i in range(len(data_x)):
+            sum += laplace((x - data_x[i]) / bandwidth)
+    return sum * 1 / (len(data_x) * bandwidth)
+
+
+def Kernel_Estimator(data_x, bandwidth, distribution):
+    x = []
+    y = []
+    for i in range(1, 1000):
+        input = min(data_x) - 0.1 * interval(data_x) + (i / 1000) * (1.2 * interval(data_x))
+        x.append(input)
+        y.append(sum(data_x, input, bandwidth, distribution=distribution))
+    return x, y
+
+
+data_y = []
+data_x = []
+for i in range(100):
+    p = math.tan(random.random() * math.pi - math.pi / 2)
+    if abs(p) < 15:
+        data_x.append(p)
+        data_y.append(0)
+for i in range(1,6):
+    kernel_x, kernel_y = Kernel_Estimator(data_x, i/5, 'laplace')
+    plt.plot(kernel_x, kernel_y,label=i/5)
+    plt.legend()
+plt.scatter(data_x, data_y, s=0.5)
+plt.show()
