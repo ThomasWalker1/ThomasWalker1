@@ -1,0 +1,100 @@
+let canvasWidth = 300;
+let canvasHeight = 300;
+let x=[];
+let y=[];
+let angle=[];
+let num_points=50;
+let colors=[];
+let time=[]
+
+function setup(){
+	createCanvas(canvasWidth, canvasHeight);
+	frameRate(24);
+	for (let i=0; i<num_points;i++){
+		x[i]=random(0,1)*canvasWidth;
+		y[i]=random(0,1)*canvasHeight;
+		angle[i]=random(0,1)*2*PI-PI;
+		time[i]=0;
+		p = random()
+		if (p<0.10){
+			colors[i]=1;
+		}else{
+			colors[i]=0;
+		}
+	}
+}
+function draw(){
+	background(0);
+	for (let i=0; i<num_points;i++){
+		p_a=random(0,1);
+		p=random(0,1);
+		if (p<0.5){
+			a_change = -log(p_a)/10;
+		} else {
+			a_change=log(p_a)/10;
+		}
+		if (colors[i]==1){
+			fill(255,0,0);
+		}
+		if (colors[i]==2){
+			fill(255,0,255);
+		}
+		if (colors[i]==0){
+			fill(255);
+		}
+		if (colors[i]==3){
+			fill(0,255,0);
+		}
+		circle(x[i]+3*cos(angle[i]),y[i]+3*sin(angle[i]),10);
+		x[i]=x[i]+cos(angle[i]);
+		y[i]=y[i]+sin(angle[i]);
+		for (let a=0; a<num_points;a++){
+			for (let b=0; b<num_points;b++){
+				if (pow((x[a]-x[b])**2 + (y[a]-y[b])**2,0.5)<20 && !(a==b)){
+					//angle[b] = angle[a]+PI/2;
+					if (colors[b]==1 &&pow((x[a]-x[b])**2 + (y[a]-y[b])**2,0.5)<10){
+						p=random(0,1)
+						if (p<0.005){
+							colors[a]=1;
+						}
+					}
+					if (colors[b]==2 &&pow((x[a]-x[b])**2 + (y[a]-y[b])**2,0.5)<10){
+						p=random(0,1)
+						if (p<0.001){
+							colors[a]=1;
+						}
+					}
+				}
+			}
+		}
+		if (x[i]<0){
+			x[i]=canvasWidth + x[i];
+		}
+		if (y[i]<0){
+			y[i]=canvasWidth + y[i];
+		}
+		if (x[i]>canvasWidth){
+			x[i]=x[i]-canvasWidth;
+		}
+		if (y[i]>canvasHeight){
+			y[i]=y[i]-canvasHeight;
+		}
+		for (let i = 0;i<num_points;i++){
+			if (colors[i]==1 || colors[i]==2){
+				time[i]=time[i]+1;
+			}
+			if (time[i] <= 3000 && time[i]>=1){
+				colors[i]=1;
+			}
+			if (time[i] <= 14000 && time[i]>=3001){
+				colors[i]=2;
+			}
+			if (time[i] == 0){
+				colors[i]=0;
+			}
+			if (time[i]>=14001){
+				colors[i]=3;
+			}
+		}
+	}
+}
